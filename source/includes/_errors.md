@@ -1,11 +1,11 @@
 # Errors
 
+
 <aside class="notice">
-This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
+Sometimes, your requests might fail. We have build this section to help you solve it.
 </aside>
 
-The Kittn API uses the following error codes:
-
+The API uses the following error codes:
 
 Error Code | Meaning
 ---------- | -------
@@ -20,3 +20,28 @@ Error Code | Meaning
 429 | Too Many Requests -- You're requesting too many kittens! Slow down!
 500 | Internal Server Error -- We had a problem with our server. Try again later.
 503 | Service Unavailable -- We're temporarily offline for maintenance. Please try again later.
+
+```shell
+{
+  "error": "INVALID_CREDENTIALS"
+}
+```
+```python
+{
+  "error": "INVALID_CREDENTIALS"
+}
+```
+```javascript
+{
+  "error": "INVALID_CREDENTIALS"
+}
+```
+
+We also send error messages like this one:
+
+Error Enum | Meaning
+---------- | -------
+INVALID_TOKEN | API key isn't correct
+INVALID_CREDENTIALS | User's password/email or password/phone is invalid
+MISSING_PARAMS | Request's body is incomplete
+RATE_LIMIT_EXCEEDED | You exceeded your rate limit

@@ -3,13 +3,8 @@ title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - ruby
   - python
   - javascript
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
 
 includes:
   - errors
@@ -21,221 +16,346 @@ code_clipboard: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to Vech Connect Restaurants! You can use our API to access marketplaces data for restaurants
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
 # Authentication
 
 > To authorize, use this code:
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
 ```python
-import kittn
+headers = {
+    'x-api-key': 'your_api_key',
+}
 
-api = kittn.authorize('meowmeowmeow')
 ```
 
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "api_endpoint_here" \
-  -H "Authorization: meowmeowmeow"
+  -H "x-api-key: your_api_key"
 ```
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
+const headers = {
+  'x-api-key': 'your_api_key'
+}
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to replace `your_api_key` with your API key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Vech connect uses API keys to allow access to the API. We'll personnally send you your api key.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Vech connect expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+`x-api-key: your_api_key`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>your_api_key</code> with your personal API key.
 </aside>
 
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+# Rappi for restaurants
+## Create a user
 
 ```python
-import kittn
+import requests
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+url = 'https://www.vech-connect.com/restaurants/rappi/users'
+
+payload = {
+    'email': 'm.colag@mirazur.fr',
+    'password': 'MirazurMenton*',
+    'user_id': '11'
+}
+
+headers = {
+  'x-api-key': 'your_api_key',
+  'Content-Type': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+
+print(response.text)
+
 ```
 
 ```shell
-curl "http://example.com/api/kittens" \
-  -H "Authorization: meowmeowmeow"
+curl --location --request POST 'https://www.vech-connect.com/restaurants/rappi/users' \
+--header 'x-api-key: your_api_key' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "m.colag@mirazur.fr",
+    "password": "MirazurMenton*",
+    "user_id": "11"
+}'
 ```
 
 ```javascript
-const kittn = require('kittn');
+const axios = require('axios')
+const data = JSON.stringify({'email':'m.colag@mirazur.fr','password':'MirazurMenton*','user_id':'11'});
 
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
+const config = {
+  method: 'post',
+  url: 'https://www.vech-connect.com/restaurants/rappi/users',
+  headers: { 
+    'x-api-key': 'your_api_key', 
+    'Content-Type': 'application/json'
   },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+  data : data
+};
+
+(() => {
+  try {
+  const { data } = await axios(config)
+  console.log(JSON.stringify(response.data))
+  } catch (error) {
+      console.log(error)
   }
-]
+})()
 ```
 
-This endpoint retrieves all kittens.
+> The above command returns JSON structured like this:
+
+```json
+{
+    
+}
+```
+
+This endpoint allows you to create and get data for a restaurant using rappi.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`POST https://www.vech-connect.com/restaurants/rappi/users`
 
-### Query Parameters
+### Payload
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Description
+--------- | -----------
+email|User's email used to log in Rappi
+password|User's password used to log in Rappi
+user_id|User's id in your backend
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+
+## Get a user
+
+```python
+import requests
+
+url = 'https://www.vech-connect.com/restaurants/rappi/users/2'
+
+headers = {
+  'x-api-key': 'your_api_key',
+  'Content-Type': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+
+print(response.text)
+
+```
+
+```shell
+curl 'https://www.vech-connect.com/restaurants/rappi/users/2' \
+--header 'x-api-key: your_api_key' \
+--header 'Content-Type: application/json'
+```
+
+```javascript
+const axios = require('axios')
+
+const config = {
+  method: 'get',
+  url: 'https://www.vech-connect.com/restaurants/rappi/users',
+  headers: { 
+    'x-api-key': 'your_api_key', 
+    'Content-Type': 'application/json'
+  },
+}
+
+(() => {
+  try {
+  const { data } = await axios(config)
+  console.log(JSON.stringify(response.data))
+  } catch (error) {
+      console.log(error)
+  }
+})()
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    
+}
+```
+
+This endpoint allows you get data for a restaurant using rappi you have previously created
+
+### HTTP Request
+
+`GET https://www.vech-connect.com/restaurants/rappi/users/<ID>`
+
+## Response
+Whenever you create or get a user, the response is the same.
+
+```json
+{
+    
+}
+```
+<aside class="notice">
+From our experience here is the most important data:
 </aside>
+Parameter | Description
+--------- | -----------
+email|User's email used to log in Rappi
+password|User's password used to log in Rappi
+user_id|User's id in your backend
 
-## Get a Specific Kitten
+# Didi Food for restaurants
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+## Create a user
 
 ```python
-import kittn
+import requests
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
+url = 'https://www.vech-connect.com/restaurants/didi-food/users'
+
+payload = {
+    'phone': '15576749098',
+    'password': 'MirazurMenton*',
+    'user_id': '11'
+}
+
+headers = {
+  'x-api-key': 'your_api_key',
+  'Content-Type': 'application/json'
+}
+
+response = requests.request('POST', url, headers=headers, json=payload)
+
+print(response.text)
+
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2" \
-  -H "Authorization: meowmeowmeow"
+curl --location --request POST 'https://www.vech-connect.com/restaurants/didi-food/users' \
+--header 'x-api-key: your_api_key' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "m.colag@mirazur.fr",
+    "password": "MirazurMenton*",
+    "user_id": "11"
+}'
 ```
 
 ```javascript
-const kittn = require('kittn');
+const axios = require('axios')
+const data = JSON.stringify({'email':'m.colag@mirazur.fr','password':'MirazurMenton*','user_id':'11'});
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+const config = {
+  method: 'post',
+  url: 'https://www.vech-connect.com/restaurants/didi-food/users',
+  headers: { 
+    'x-api-key': 'your_api_key', 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+(() => {
+  try {
+  const { data } = await axios(config)
+  console.log(JSON.stringify(response.data))
+  } catch (error) {
+      console.log(error)
+  }
+})()
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+    
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This endpoint allows you to create and get data for a restaurant using didi-food.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`POST https://www.vech-connect.com/restaurants/didi-food/users`
 
-### URL Parameters
+### Payload
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to retrieve
+phone|User's phone used to log in Didi Food
+password|User's password used to log in Didi Food
+user_id|User's id in your backend
 
-## Delete a Specific Kitten
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
+## Get a user
 
 ```python
-import kittn
+import requests
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
+url = 'https://www.vech-connect.com/restaurants/didi-food/users/2'
+
+headers = {
+  'x-api-key': 'your_api_key',
+  'Content-Type': 'application/json'
+}
+
+response = requests.request('GET', url, headers=headers)
+
+print(response.text)
+
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2" \
-  -X DELETE \
-  -H "Authorization: meowmeowmeow"
+curl 'https://www.vech-connect.com/restaurants/didi-food/users/2' \
+--header 'x-api-key: your_api_key' \
+--header 'Content-Type: application/json'
 ```
 
 ```javascript
-const kittn = require('kittn');
+const axios = require('axios')
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+const config = {
+  method: 'get',
+  url: 'https://www.vech-connect.com/restaurants/didi-food/users',
+  headers: { 
+    'x-api-key': 'your_api_key', 
+    'Content-Type': 'application/json'
+  },
+}
+
+(() => {
+  try {
+  const { data } = await axios(config)
+  console.log(JSON.stringify(response.data))
+  } catch (error) {
+      console.log(error)
+  }
+})()
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+    
 }
 ```
 
-This endpoint deletes a specific kitten.
+This endpoint allows you get data for a restaurant using didi-food you have previously created
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+`GET https://www.vech-connect.com/restaurants/didi-food/users/<ID>`
 
